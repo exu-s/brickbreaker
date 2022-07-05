@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 import 'dart:async';
-import 'dart:html';
+
 import 'package:brickbreaker/ball.dart';
 import 'package:brickbreaker/coverscreen.dart';
 import 'package:brickbreaker/player.dart';
@@ -24,12 +24,33 @@ class _HomePageState extends State<HomePage> {
 
   bool hasGameStarted = false;
 
+  // start game
   void startGame() {
     hasGameStarted = true;
     Timer.periodic(Duration(milliseconds: 10), (timer) {
       setState(() {
         ballY -= 0.01;
       });
+    });
+  }
+
+  // move left
+  void moveLeft() {
+    setState(() {
+      // only if doesnt go off the screen left
+      if (!(playerX - 0.2 <= -1)) {
+        playerX -= 0.2;
+      }
+    });
+  }
+
+  // move right
+  void moveRight() {
+    setState(() {
+      // only if doesnt go off the screen right
+      if (!(playerX + 0.2 >= 1)) {
+        playerX += 0.2;
+      }
     });
   }
 
