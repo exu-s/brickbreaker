@@ -16,30 +16,38 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-enum direction { UP, DOWN }
+enum direction { UP, DOWN, LEFT, RIGHT }
 
 class _HomePageState extends State<HomePage> {
   // ball variables
-  double ballX = 0;
-  double ballY = 0;
+  double ballX = 0.0;
+  double ballY = 0.0;
+  double ballXincrements = 0.01;
+  double ballYincrements = 0.01;
 
   double playerX = -0.2;
   double playerWidth = 0.4;
-  var ballDirection = direction.DOWN;
+  var ballXDirection = direction.LEFT;
+  var ballYDirection = direction.DOWN;
 
   bool hasGameStarted = false;
   bool isGameOver = false;
 
-  double brickX = 0;
-  double brickY = -0.9;
-  double brickWidth = 0.4;
-  double brickHeight = 0.04;
+  static double firstBrickX = -0.5;
+  static double firstBrickY = -0.9;
+  static double brickWidth = 0.4;
+  static double brickHeight = 0.04;
   bool brickBroken = false;
+  static double brickGap = 0.2;
 
+  List myBricks = [
+    [firstBrickX, firstBrickY, false],
+    [firstBrickX + brickWidth + brickGap, firstBrickY, false],
+  ];
   // start game
   void startGame() {
     hasGameStarted = true;
-    Timer.periodic(Duration(milliseconds: 10), (timer) {
+    Timer.periodic(Duration(milliseconds: 20), (timer) {
       setState(() {
         // move the ball
         moveBall();
@@ -60,13 +68,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   void checkBrokenBricks() {
-    if (ballX >= brickX &&
-        ballX <= brickX + brickWidth &&
-        ballY <= brickY + brickHeight &&
+    if (ballX >= myBricks[0][0] &&
+        ballX <= myBricks[0][0] + brickWidth &&
+        ballY <= myBricks[0][1] + brickHeight &&
         brickBroken == false) {
       setState(() {
         brickBroken = true;
-        ballDirection = direction.DOWN;
+        ballYDirection = direction.DOWN;
       });
     }
   }
@@ -79,19 +87,36 @@ class _HomePageState extends State<HomePage> {
   }
 
   void updateDirection() {
+    // ball up when it hits the player
     if (ballY >= 0.9 && ballX >= playerX && ballX <= playerX + playerWidth) {
-      ballDirection = direction.UP;
-    } else if (ballY <= -1) {
-      ballDirection = direction.DOWN;
+      ballYDirection = direction.UP;
+    }
+    // ball goes down when it hits the top screen
+    else if (ballY <= -1) {
+      ballYDirection = direction.DOWN;
+    }
+
+    if (ballX >= 1) {
+      ballXDirection = direction.LEFT;
+    } else if (ballX <= -1) {
+      ballXDirection = direction.RIGHT;
     }
   }
 
   void moveBall() {
     setState(() {
-      if (ballDirection == direction.DOWN) {
-        ballY += 0.01;
-      } else if (ballDirection == direction.UP) {
-        ballY -= 0.01;
+      // move vertically
+      if (ballYDirection == direction.DOWN) {
+        ballY += ballYincrements;
+      } else if (ballYDirection == direction.UP) {
+        ballY -= ballYincrements;
+      }
+
+      // move horizontally
+      if (ballXDirection == direction.LEFT) {
+        ballX -= ballXincrements;
+      } else if (ballXDirection == direction.RIGHT) {
+        ballX += ballXincrements;
       }
     });
   }
@@ -100,7 +125,7 @@ class _HomePageState extends State<HomePage> {
   void moveLeft() {
     setState(() {
       // only if doesnt go off the screen left
-      if (!(playerX - 0.2 <= -1)) {
+      if (!(playerX - 0.1 <= -1)) {
         playerX -= 0.2;
       }
     });
@@ -110,7 +135,7 @@ class _HomePageState extends State<HomePage> {
   void moveRight() {
     setState(() {
       // only if doesnt go off the screen right
-      if (!(playerX + 0.2 >= 1)) {
+      if (!(playerX + 0.4 >= 1)) {
         playerX += 0.2;
       }
     });
@@ -151,8 +176,15 @@ class _HomePageState extends State<HomePage> {
                 MyBrick(
                   brickHeight: brickHeight,
                   brickWidth: brickWidth,
-                  brickX: brickX,
-                  brickY: brickY,
+                  brickX: myBricks[0][0],
+                  brickY: myBricks[0][1],
+                  brickBroken: brickBroken,
+                ),
+                MyBrick(
+                  brickHeight: brickHeight,
+                  brickWidth: brickWidth,
+                  brickX: myBricks[1][0],
+                  brickY: myBricks[1][1],
                   brickBroken: brickBroken,
                 )
               ],
