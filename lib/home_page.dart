@@ -2,7 +2,9 @@
 import 'dart:async';
 
 import 'package:brickbreaker/ball.dart';
+import 'package:brickbreaker/brick.dart';
 import 'package:brickbreaker/coverscreen.dart';
+import 'package:brickbreaker/gameoverscreen.dart';
 import 'package:brickbreaker/player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,6 +29,11 @@ class _HomePageState extends State<HomePage> {
 
   bool hasGameStarted = false;
   bool isGameOver = false;
+
+  double brickX = 0;
+  double brickY = -0.9;
+  double brickWidth = 0.4;
+  double brickHeight = 0.04;
 
   // start game
   void startGame() {
@@ -115,13 +122,22 @@ class _HomePageState extends State<HomePage> {
                 // tap to play
                 CoverScreen(hasGameStarted: hasGameStarted),
 
+                // game over screen
+                GameOverScreen(isGameOver: isGameOver),
+
                 // the ball
                 MyBall(ballX: ballX, ballY: ballY),
 
                 // player
-                MyPlayer(playerX: playerX, playerWidth: playerWidth)
+                MyPlayer(playerX: playerX, playerWidth: playerWidth),
 
-                // playerX exact position
+                // bricks to hit
+                MyBrick(
+                  brickHeight: brickHeight,
+                  brickWidth: brickWidth,
+                  brickX: brickX,
+                  brickY: brickY,
+                )
               ],
             ),
           ),
