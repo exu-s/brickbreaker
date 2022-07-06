@@ -14,6 +14,8 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
+enum direction { UP, DOWN }
+
 class _HomePageState extends State<HomePage> {
   // ball variables
   double ballX = 0;
@@ -21,6 +23,7 @@ class _HomePageState extends State<HomePage> {
 
   double playerX = 0;
   double playerWidth = 0.3;
+  var ballDirection = direction.DOWN;
 
   bool hasGameStarted = false;
 
@@ -29,8 +32,21 @@ class _HomePageState extends State<HomePage> {
     hasGameStarted = true;
     Timer.periodic(Duration(milliseconds: 10), (timer) {
       setState(() {
-        ballY -= 0.01;
+        // move the ball
+        moveBall();
+
+        // update direction
       });
+    });
+  }
+
+  void moveBall() {
+    setState(() {
+      if (ballDirection == direction.DOWN) {
+        ballY += 0.01;
+      } else if (ballDirection == direction.UP) {
+        ballY -= 0.01;
+      }
     });
   }
 
@@ -48,7 +64,7 @@ class _HomePageState extends State<HomePage> {
   void moveRight() {
     setState(() {
       // only if doesnt go off the screen right
-      if (!(playerX + 0.2 >= 1)) {
+      if (!(playerX + playerWidth > 1)) {
         playerX += 0.2;
       }
     });
@@ -81,6 +97,8 @@ class _HomePageState extends State<HomePage> {
 
                 // player
                 MyPlayer(playerX: playerX, playerWidth: playerWidth)
+
+                // playerX exact position
               ],
             ),
           ),
