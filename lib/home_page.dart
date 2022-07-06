@@ -34,6 +34,7 @@ class _HomePageState extends State<HomePage> {
   double brickY = -0.9;
   double brickWidth = 0.4;
   double brickHeight = 0.04;
+  bool brickBroken = false;
 
   // start game
   void startGame() {
@@ -51,8 +52,23 @@ class _HomePageState extends State<HomePage> {
           timer.cancel();
           isGameOver = true;
         }
+
+        // is brick dead
+        checkBrokenBricks();
       });
     });
+  }
+
+  void checkBrokenBricks() {
+    if (ballX >= brickX &&
+        ballX <= brickX + brickWidth &&
+        ballY <= brickY + brickHeight &&
+        brickBroken == false) {
+      setState(() {
+        brickBroken = true;
+        ballDirection = direction.DOWN;
+      });
+    }
   }
 
   bool isPlayerDead() {
@@ -65,7 +81,7 @@ class _HomePageState extends State<HomePage> {
   void updateDirection() {
     if (ballY >= 0.9 && ballX >= playerX && ballX <= playerX + playerWidth) {
       ballDirection = direction.UP;
-    } else if (ballY <= -0.9) {
+    } else if (ballY <= -1) {
       ballDirection = direction.DOWN;
     }
   }
@@ -137,6 +153,7 @@ class _HomePageState extends State<HomePage> {
                   brickWidth: brickWidth,
                   brickX: brickX,
                   brickY: brickY,
+                  brickBroken: brickBroken,
                 )
               ],
             ),
