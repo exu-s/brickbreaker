@@ -21,11 +21,12 @@ class _HomePageState extends State<HomePage> {
   double ballX = 0;
   double ballY = 0;
 
-  double playerX = 0;
-  double playerWidth = 0.3;
+  double playerX = -0.2;
+  double playerWidth = 0.4;
   var ballDirection = direction.DOWN;
 
   bool hasGameStarted = false;
+  bool isGameOver = false;
 
   // start game
   void startGame() {
@@ -36,8 +37,30 @@ class _HomePageState extends State<HomePage> {
         moveBall();
 
         // update direction
+        updateDirection();
+
+        // game over check
+        if (isPlayerDead()) {
+          timer.cancel();
+          isGameOver = true;
+        }
       });
     });
+  }
+
+  bool isPlayerDead() {
+    if (ballY >= 1) {
+      return true;
+    }
+    return false;
+  }
+
+  void updateDirection() {
+    if (ballY >= 0.9 && ballX >= playerX && ballX <= playerX + playerWidth) {
+      ballDirection = direction.UP;
+    } else if (ballY <= -0.9) {
+      ballDirection = direction.DOWN;
+    }
   }
 
   void moveBall() {
@@ -64,7 +87,7 @@ class _HomePageState extends State<HomePage> {
   void moveRight() {
     setState(() {
       // only if doesnt go off the screen right
-      if (!(playerX + playerWidth > 1)) {
+      if (!(playerX + 0.2 >= 1)) {
         playerX += 0.2;
       }
     });
