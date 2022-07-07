@@ -237,7 +237,10 @@ class _HomePageState extends State<HomePage> {
             child: Stack(
               children: [
                 // tap to play
-                CoverScreen(hasGameStarted: hasGameStarted),
+                CoverScreen(
+                  hasGameStarted: hasGameStarted,
+                  isGameOver: isGameOver,
+                ),
 
                 // game over screen
                 GameOverScreen(
