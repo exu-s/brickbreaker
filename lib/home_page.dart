@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
   // ball variables
   double ballX = 0.0;
   double ballY = 0.0;
-  double ballXincrements = 0.01;
+  double ballXincrements = 0.02;
   double ballYincrements = 0.01;
 
   double playerX = -0.2;
@@ -94,10 +94,10 @@ class _HomePageState extends State<HomePage> {
           // update direction after broken bricks
           switch (min) {
             case 'left':
-              ballYDirection = direction.LEFT;
+              ballXDirection = direction.LEFT;
               break;
             case 'right':
-              ballYDirection = direction.RIGHT;
+              ballXDirection = direction.RIGHT;
               break;
             case 'up':
               ballYDirection = direction.UP;
