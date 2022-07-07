@@ -3,17 +3,40 @@ import 'package:google_fonts/google_fonts.dart';
 
 class GameOverScreen extends StatelessWidget {
   final bool isGameOver;
-  const GameOverScreen({Key? key, required this.isGameOver}) : super(key: key);
+  final function;
+  const GameOverScreen({Key? key, required this.isGameOver, this.function})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return isGameOver
-        ? Container(
-            alignment: const Alignment(0, -0.3),
-            child: Text(
-              'G A M E   O V E R',
-              style: GoogleFonts.pressStart2p(color: Colors.white),
-            ),
+        ? Stack(
+            children: [
+              Container(
+                alignment: const Alignment(0, -0.3),
+                child: Text(
+                  'GAME OVER',
+                  style: GoogleFonts.pressStart2p(color: Colors.white),
+                ),
+              ),
+              Container(
+                alignment: const Alignment(0, 0),
+                child: GestureDetector(
+                  onTap: function,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(5),
+                    child: Container(
+                      padding: EdgeInsets.all(15),
+                      color: Colors.black,
+                      child: Text(
+                        'P L A Y   A G A I N',
+                        style: GoogleFonts.pressStart2p(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           )
         : Container();
   }
