@@ -4,7 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 class GameOverScreen extends StatelessWidget {
   final bool isGameOver;
   final function;
-  const GameOverScreen({Key? key, required this.isGameOver, this.function})
+  const GameOverScreen(
+      {Key? key, required this.isGameOver, required this.function})
       : super(key: key);
 
   @override
@@ -13,7 +14,7 @@ class GameOverScreen extends StatelessWidget {
         ? Stack(
             children: [
               Container(
-                alignment: const Alignment(0, -0.3),
+                alignment: const Alignment(0, -0.1),
                 child: Text(
                   'GAME OVER',
                   style: GoogleFonts.pressStart2p(color: Colors.white),

@@ -146,6 +146,22 @@ class _HomePageState extends State<HomePage> {
     return false;
   }
 
+  // reset game (init)
+  void resetGame() {
+    setState(() {
+      playerX = -0.2;
+      ballX = 0;
+      ballY = 0;
+      isGameOver = false;
+      hasGameStarted = false;
+      myBricks = [
+        [firstBrickX + 0 * (brickWidth + brickGap), firstBrickY, false],
+        [firstBrickX + 1 * (brickWidth + brickGap), firstBrickY, false],
+        [firstBrickX + 2 * (brickWidth + brickGap), firstBrickY, false],
+      ];
+    });
+  }
+
   void updateDirection() {
     // ball up when it hits the player
     if (ballY >= 0.9 && ballX >= playerX && ballX <= playerX + playerWidth) {
@@ -224,7 +240,10 @@ class _HomePageState extends State<HomePage> {
                 CoverScreen(hasGameStarted: hasGameStarted),
 
                 // game over screen
-                GameOverScreen(isGameOver: isGameOver),
+                GameOverScreen(
+                  isGameOver: isGameOver,
+                  function: resetGame,
+                ),
 
                 // the ball
                 MyBall(ballX: ballX, ballY: ballY),
