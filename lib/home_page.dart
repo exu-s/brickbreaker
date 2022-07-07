@@ -81,10 +81,62 @@ class _HomePageState extends State<HomePage> {
           myBricks[i][2] == false) {
         setState(() {
           myBricks[i][2] = true;
-          ballYDirection = direction.DOWN;
+
+          // distance
+          double leftSideDist = (myBricks[i][0] - ballX).abs();
+          double rightSideDist = (myBricks[i][0] + brickWidth - ballX).abs();
+          double topSideDist = (myBricks[i][0] - ballY).abs();
+          double bottomSideDist = (myBricks[i][0] + brickHeight - ballY).abs();
+
+          String min =
+              findMin(leftSideDist, rightSideDist, topSideDist, bottomSideDist);
+
+          // update direction after broken bricks
+          switch (min) {
+            case 'left':
+              ballYDirection = direction.LEFT;
+              break;
+            case 'right':
+              ballYDirection = direction.RIGHT;
+              break;
+            case 'up':
+              ballYDirection = direction.UP;
+              break;
+            case 'down':
+              ballYDirection = direction.DOWN;
+              break;
+          }
         });
       }
     }
+  }
+
+  // returns the smallest side
+  String findMin(double a, double b, double c, double d) {
+    List<double> myList = [
+      a,
+      b,
+      c,
+      d,
+    ];
+    double currentMin = a;
+    for (int i = 0; i < myList.length; i++) {
+      if (myList[i] < currentMin) {
+        currentMin = myList[i];
+      }
+    }
+
+    if ((currentMin - a).abs() < 0.01) {
+      return 'left';
+    } else if ((currentMin - b).abs() < 0.01) {
+      return 'right';
+    } else if ((currentMin - c).abs() < 0.01) {
+      return 'top';
+    } else if ((currentMin - d).abs() < 0.01) {
+      return 'bottom';
+    }
+
+    return '';
   }
 
   bool isPlayerDead() {
