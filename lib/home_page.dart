@@ -37,7 +37,7 @@ class _HomePageState extends State<HomePage> {
   static double firstBrickY = -0.9;
   static double brickWidth = 0.4;
   static double brickHeight = 0.04;
-  bool brickBroken = false;
+
   static int numberOfBricksInRow = 3;
   static double wallGap = 0.5 *
       (2 -
@@ -78,9 +78,9 @@ class _HomePageState extends State<HomePage> {
       if (ballX >= myBricks[i][0] &&
           ballX <= myBricks[i][0] + brickWidth &&
           ballY <= myBricks[i][1] + brickHeight &&
-          brickBroken == false) {
+          myBricks[i][2] == false) {
         setState(() {
-          brickBroken = true;
+          myBricks[i][2] = true;
           ballYDirection = direction.DOWN;
         });
       }
@@ -186,21 +186,21 @@ class _HomePageState extends State<HomePage> {
                   brickWidth: brickWidth,
                   brickX: myBricks[0][0],
                   brickY: myBricks[0][1],
-                  brickBroken: brickBroken,
+                  brickBroken: myBricks[0][2],
                 ),
                 MyBrick(
                   brickHeight: brickHeight,
                   brickWidth: brickWidth,
                   brickX: myBricks[1][0],
                   brickY: myBricks[1][1],
-                  brickBroken: brickBroken,
+                  brickBroken: myBricks[1][2],
                 ),
                 MyBrick(
                   brickHeight: brickHeight,
                   brickWidth: brickWidth,
                   brickX: myBricks[2][0],
                   brickY: myBricks[2][1],
-                  brickBroken: brickBroken,
+                  brickBroken: myBricks[2][2],
                 )
               ],
             ),
