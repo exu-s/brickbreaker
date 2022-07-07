@@ -33,16 +33,22 @@ class _HomePageState extends State<HomePage> {
   bool hasGameStarted = false;
   bool isGameOver = false;
 
-  static double firstBrickX = -0.5;
+  static double firstBrickX = -1 + wallGap;
   static double firstBrickY = -0.9;
   static double brickWidth = 0.4;
   static double brickHeight = 0.04;
   bool brickBroken = false;
+  static int numberOfBricksInRow = 3;
+  static double wallGap = 0.5 *
+      (2 -
+          numberOfBricksInRow * brickWidth -
+          (numberOfBricksInRow - 1) * brickGap);
   static double brickGap = 0.2;
 
   List myBricks = [
-    [firstBrickX, firstBrickY, false],
-    [firstBrickX + brickWidth + brickGap, firstBrickY, false],
+    [firstBrickX + 0 * (brickWidth + brickGap), firstBrickY, false],
+    [firstBrickX + 1 * (brickWidth + brickGap), firstBrickY, false],
+    [firstBrickX + 2 * (brickWidth + brickGap), firstBrickY, false],
   ];
   // start game
   void startGame() {
@@ -68,14 +74,16 @@ class _HomePageState extends State<HomePage> {
   }
 
   void checkBrokenBricks() {
-    if (ballX >= myBricks[0][0] &&
-        ballX <= myBricks[0][0] + brickWidth &&
-        ballY <= myBricks[0][1] + brickHeight &&
-        brickBroken == false) {
-      setState(() {
-        brickBroken = true;
-        ballYDirection = direction.DOWN;
-      });
+    for (int i = 0; i < myBricks.length; i++) {
+      if (ballX >= myBricks[i][0] &&
+          ballX <= myBricks[i][0] + brickWidth &&
+          ballY <= myBricks[i][1] + brickHeight &&
+          brickBroken == false) {
+        setState(() {
+          brickBroken = true;
+          ballYDirection = direction.DOWN;
+        });
+      }
     }
   }
 
@@ -185,6 +193,13 @@ class _HomePageState extends State<HomePage> {
                   brickWidth: brickWidth,
                   brickX: myBricks[1][0],
                   brickY: myBricks[1][1],
+                  brickBroken: brickBroken,
+                ),
+                MyBrick(
+                  brickHeight: brickHeight,
+                  brickWidth: brickWidth,
+                  brickX: myBricks[2][0],
+                  brickY: myBricks[2][1],
                   brickBroken: brickBroken,
                 )
               ],
